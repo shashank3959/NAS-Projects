@@ -5,6 +5,7 @@ This project contains the following neural architecture search algorithms, imple
 - Network Pruning via Transformable Architecture Search, NeurIPS 2019
 - One-Shot Neural Architecture Search via Self-Evaluated Template Network, ICCV 2019
 - Searching for A Robust Neural Architecture in Four GPU Hours, CVPR 2019
+- Auto-ReID: Searching for a Part-Aware ConvNet for Person Re-Identification, ICCV 2019
 
 
 ## Requirements and Preparation
@@ -64,7 +65,10 @@ CUDA_VISIBLE_DEVICES=0 bash ./scripts/nas-infer-train.sh cifar100 SETN 96 -1
 CUDA_VISIBLE_DEVICES=0,1,2,3 bash ./scripts/nas-infer-train.sh imagenet-1k SETN  256 -1
 ```
 
-Searching codes come soon!
+The searching codes of SETN on a small search space:
+```
+CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/SETN.sh cifar10 -1
+```
 
 
 ## [Searching for A Robust Neural Architecture in Four GPU Hours](https://arxiv.org/abs/1910.04465)
@@ -87,8 +91,23 @@ CUDA_VISIBLE_DEVICES=0 bash ./scripts/nas-infer-train.sh cifar100 GDAS_V1 96 -1
 CUDA_VISIBLE_DEVICES=0,1,2,3 bash ./scripts/nas-infer-train.sh imagenet-1k GDAS_V1 256 -1
 ```
 
-Searching codes come soon! A small example forward code segment for searching can be found in [this issue](https://github.com/D-X-Y/NAS-Projects/issues/12).
+The GDAS searching codes on a small search space:
+```
+CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/GDAS.sh cifar10 -1
+```
 
+The baseline searching codes are DARTS:
+```
+CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/DARTS-V1.sh cifar10 -1
+CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/DARTS-V2.sh cifar10 -1
+```
+
+
+## [Auto-ReID: Searching for a Part-Aware ConvNet for Person Re-Identification](https://arxiv.org/abs/1903.09776)
+
+The part-aware module is defined at [here](https://github.com/D-X-Y/NAS-Projects/blob/master/lib/models/cell_searchs/operations.py#L85).
+
+For more questions, please contact Ruijie Quan (Ruijie.Quan@student.uts.edu.au).
 
 # Citation
 
