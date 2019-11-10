@@ -5,12 +5,12 @@ This project contains the following neural architecture search algorithms, imple
 - Network Pruning via Transformable Architecture Search, NeurIPS 2019
 - One-Shot Neural Architecture Search via Self-Evaluated Template Network, ICCV 2019
 - Searching for A Robust Neural Architecture in Four GPU Hours, CVPR 2019
-- Auto-ReID: Searching for a Part-Aware ConvNet for Person Re-Identification, ICCV 2019
+- several typical classification models, e.g., ResNet and DenseNet (see BASELINE.md)
 
 
 ## Requirements and Preparation
 
-Please install `PyTorch>=1.0.1`, `Python>=3.6`, and `opencv`.
+Please install `PyTorch>=1.1.0`, `Python>=3.6`, and `opencv`.
 
 The CIFAR and ImageNet should be downloaded and extracted into `$TORCH_HOME`.
 Some methods use knowledge distillation (KD), which require pre-trained models. Please download these models from [Google Driver](https://drive.google.com/open?id=1ANmiYEGX-IQZTfH8w0aSpj-Wypg-0DR-) (or train by yourself) and save into `.latent-data`.
@@ -102,12 +102,6 @@ CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/DARTS-V1.sh cifar10 -1
 CUDA_VISIBLE_DEVICES=0 bash ./scripts-search/algos/DARTS-V2.sh cifar10 -1
 ```
 
-
-## [Auto-ReID: Searching for a Part-Aware ConvNet for Person Re-Identification](https://arxiv.org/abs/1903.09776)
-
-The part-aware module is defined at [here](https://github.com/D-X-Y/NAS-Projects/blob/master/lib/models/cell_searchs/operations.py#L85).
-
-For more questions, please contact Ruijie Quan (Ruijie.Quan@student.uts.edu.au).
 
 # Citation
 
