@@ -5,7 +5,7 @@ This project contains the following neural architecture search algorithms, imple
 - Network Pruning via Transformable Architecture Search, NeurIPS 2019
 - One-Shot Neural Architecture Search via Self-Evaluated Template Network, ICCV 2019
 - Searching for A Robust Neural Architecture in Four GPU Hours, CVPR 2019
-- several typical classification models, e.g., ResNet and DenseNet (see BASELINE.md)
+- several typical classification models, e.g., ResNet and DenseNet (see [BASELINE.md](https://github.com/D-X-Y/NAS-Projects/blob/master/BASELINE.md))
 
 
 ## Requirements and Preparation
@@ -14,6 +14,15 @@ Please install `PyTorch>=1.1.0`, `Python>=3.6`, and `opencv`.
 
 The CIFAR and ImageNet should be downloaded and extracted into `$TORCH_HOME`.
 Some methods use knowledge distillation (KD), which require pre-trained models. Please download these models from [Google Driver](https://drive.google.com/open?id=1ANmiYEGX-IQZTfH8w0aSpj-Wypg-0DR-) (or train by yourself) and save into `.latent-data`.
+
+### usefull tools
+1. Compute the number of parameters and FLOPs of a model:
+```
+from utils import get_model_infos
+flop, param  = get_model_infos(net, (1,3,32,32))
+```
+
+2. Different NAS-searched architectures are defined [here](https://github.com/D-X-Y/NAS-Projects/blob/master/lib/nas_infer_model/DXYs/genotypes.py).
 
 
 ## [Network Pruning via Transformable Architecture Search](https://arxiv.org/abs/1905.09717)

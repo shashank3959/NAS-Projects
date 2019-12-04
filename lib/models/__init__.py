@@ -1,3 +1,6 @@
+##################################################
+# Copyright (c) Xuanyi Dong [GitHub D-X-Y], 2019 #
+##################################################
 import torch
 from os import path as osp
 
@@ -13,10 +16,15 @@ from .cell_searchs import CellStructure, CellArchitectures
 
 # Cell-based NAS Models
 def get_cell_based_tiny_net(config):
-  group_names = ['DARTS-V1', 'DARTS-V2', 'GDAS', 'SETN', 'ENAS']
-  from .cell_searchs import nas_super_nets
-  if config.name in group_names:
+  super_type = getattr(config, 'super_type', 'basic')
+  group_names = ['DARTS-V1', 'DARTS-V2', 'GDAS', 'SETN', 'ENAS', 'RANDOM']
+  if super_type == 'basic' and config.name in group_names:
+    from .cell_searchs import nas_super_nets
     return nas_super_nets[config.name](config.C, config.N, config.max_nodes, config.num_classes, config.space)
+  elif super_type == 'l2s-base' and config.name in group_names:
+    from .l2s_cell_searchs import nas_super_nets
+    return nas_super_nets[config.name](config.C, config.N, config.max_nodes, config.num_classes, config.space \
+                                      ,config.n_piece)
   elif config.name == 'infer.tiny':
     from .cell_infers import TinyNetwork
     return TinyNetwork(config.C, config.N, config.genotype, config.num_classes)
@@ -35,12 +43,15 @@ def get_search_spaces(xtype, name):
 
 def get_cifar_models(config):
   from .CifarResNet      import CifarResNet
+  from .CifarDenseNet    import DenseNet
   from .CifarWideResNet  import CifarWideResNet
   
   super_type = getattr(config, 'super_type', 'basic')
   if super_type == 'basic':
     if config.arch == 'resnet':
       return CifarResNet(config.module, config.depth, config.class_num, config.zero_init_residual)
+    elif config.arch == 'densenet':
+      return DenseNet(config.growthRate, config.depth, config.reduction, config.class_num, config.bottleneck)
     elif config.arch == 'wideresnet':
       return CifarWideResNet(config.depth, config.wide_factor, config.class_num, config.dropout)
     else:
@@ -65,8 +76,13 @@ def get_cifar_models(config):
 
 def get_imagenet_models(config):
   super_type = getattr(config, 'super_type', 'basic')
-  # NAS searched architecture
-  if super_type.startswith('infer'):
+  if super_type == 'basic':
+    from .ImagenetResNet import ResNet
+    if config.arch == 'resnet':
+      return ResNet(config.block_name, config.layers, config.deep_stem, config.class_num, config.zero_init_residual, config.groups, config.width_per_group)
+    else:
+      raise ValueError('invalid arch : {:}'.format( config.arch ))
+  elif super_type.startswith('infer'): # NAS searched architecture
     assert len(super_type.split('-')) == 2, 'invalid super_type : {:}'.format(super_type)
     infer_mode = super_type.split('-')[1]
     if infer_mode == 'shape':

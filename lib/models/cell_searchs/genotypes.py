@@ -1,3 +1,6 @@
+##################################################
+# Copyright (c) Xuanyi Dong [GitHub D-X-Y], 2019 #
+##################################################
 from copy import deepcopy
 
 
@@ -60,20 +63,26 @@ class Structure:
       strings.append( string )
     return '+'.join(strings)
 
-  def to_unique_str(self, consider_zero=False):
+  def check_valid(self):
+    nodes = {0: True}
+    for i, node_info in enumerate(self.nodes):
+      sums = []
+      for op, xin in node_info:
+        if op == 'none' or nodes[xin] == False: x = False
+        else: x = True
+        sums.append( x )
+      nodes[i+1] = sum(sums) > 0
+    return nodes[len(self.nodes)]
+
+  def to_unique_str(self):
     # this is used to identify the isomorphic cell, which rerquires the prior knowledge of operation
     # two operations are special, i.e., none and skip_connect
     nodes = {0: '0'}
     for i_node, node_info in enumerate(self.nodes):
       cur_node = []
       for op, xin in node_info:
-        if consider_zero:
-          if op == 'none' or nodes[xin] == '#': x = '#' # zero
-          elif op == 'skip_connect': x = nodes[xin]
-          else: x = nodes[xin] + '@{:}'.format(op)
-        else:
-          if op == 'skip_connect': x = nodes[xin]
-          else: x = nodes[xin] + '@{:}'.format(op)
+        if op == 'skip_connect': x = nodes[xin]
+        else: x = '('+nodes[xin]+')' + '@{:}'.format(op)
         cur_node.append(x)
       nodes[i_node+1] = '+'.join( sorted(cur_node) )
     return nodes[ len(self.nodes) ]
